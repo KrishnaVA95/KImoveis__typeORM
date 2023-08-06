@@ -1,4 +1,4 @@
-# KImóveis, imobiliária com TypeORM e relacionamentos
+# KImóveis, imobiliária com TypeORM 
 
 <div>
     <img align="center" alt="Krishna-Node" height="30" width="40" src="https://www.vectorlogo.zone/logos/nodejs/nodejs-icon.svg">
@@ -6,7 +6,7 @@
      <img align="center" alt="Krishna-Ts" height="30" width="40" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/typescript/typescript-plain.svg">
 </div>
 
-### Introdução
+# Introdução
 
 KImóveis é um software de gerenciamento de imóveis que permite o cadastro de imóveis e de usuários interessados na aquisição de propriedades. Através da aplicação, é possível realizar o agendamento e consultar horários de visitas às propriedades disponíveis no banco de dados. 
 
@@ -14,8 +14,94 @@ Utilizei de várias tecnologias diferentes. O código foi desenvolvido em TypeSc
 
 Uma das principais vantagens do KImóveis é que ele utiliza o relacionamento entre 5 tabelas diferentes: users, addresses, categories, real_estate e schedules. Cada tabela contém informações específicas sobre os imóveis e os usuários interessados na aquisição de propriedades. Ao dividir as informações em várias tabelas e criar relações entre elas, você pode gerenciar as informações de forma mais eficiente e evitar a duplicação de dados.
 
-### URL Base: localhost:3000
+# Inicialização do projeto
+-  Você precisa ter o banco de dados postegresSQL e node.js  em sua máquina.
+<a href='https://nodejs.org/en/download'>Node.js</a> | 
+<a href='https://www.enterprisedb.com/downloads/postgres-postgresql-downloads'>PSQL</a>
 
+-  Clone o repositório
+
+```
+git clone <URL-GITHUB>
+```
+
+-  Criar banco de dados postegres
+
+`Conectado no terminal interativo do PostgreSQL (psql)`
+```
+psql -U postgres
+```
+
+`Postgres user default password`
+```
+1234
+```
+
+
+`Create Database`
+```
+CREATE DATABASE <name-your-database> ; 
+```
+
+`desconectar terminal interativo do PostgreSQL` 
+```
+ctrl + c
+```
+
+-  Criar arquivo .env 
+```json
+DATABASE_URL="postgres://<USER>:<PASS>@<HOST>:<PORT>/<DATABASE>"
+SECRET_KEY="#%$*&**&&-09875$hddsa%TT"
+```
+
+```json
+DATABASE_URL="postgresql://postgres:1234@localhost:5432/db_kimoveis"
+```
+
+-  Executar Migraçoens
+```
+npm run typeorm migration:run -- -d ./src/data-source
+```
+
+-  Instale a node modules
+
+```
+npm install
+```
+
+-  Rodar servidor
+```
+npm run dev
+```
+
+# Testes automatizados
+-   Para executar os testes,  os arquivos  e configuração  do passo anterior devem ter sido finalizados.
+-   Voce pode executar os testes com o comando `npm run test` ou `yarn test` a depender do gerenciador de pacotes usado. (`npm`)
+-   Execute apenas a rota específica, com o comando `npm run test <pastaDentroDoIntegration>/<nomeDoArquivo>` como, por exemplo, rodando apenas a rota de criação de usuários: `npm run test users/createUser.route.spec.ts`
+
+
+
+#  Base URL:
+
+```
+ localhost:3000
+```
+
+# Endpoints 
+| Método | Endpoint                   | Responsabilidade                                  | Autenticação                           |
+| ------ | -------------------------- | ------------------------------------------------- | -------------------------------------- |
+| POST   | /users                     | Criação de usuário                                | Qualquer usuário, não necessita token  |
+| GET    | /users                     | Lista todos os usuários                           | Apenas Admnistradores                  |
+| PATCH  | /users/:id                 | Atualiza um usuário                               | Apenas Admnistradores ou dono da conta |
+| DELETE | /users/:id                 | Realiza um soft delete no usuário                 | Apenas Admnistradores                  |
+| POST   | /login                     | Gera o token de autenticação                      | Qualquer usuário, não necessita token  |
+| POST   | /categories                | Criação de categoria                              | Apenas Admnistradores                  |
+| GET    | /categories                | Lista todas as categorias                         | Qualquer usuário, não necessita token  |
+| GET    | /categories/:id/realEstate | Lista todos imóveis que pertencem a uma categoria | Qualquer usuário, não necessita token  |
+| POST   | /realEstate                | Criação de um imóvel                              | Apenas Admnistradores                  |
+| GET    | /realEstate                | Lista todos os imóveis                            | Qualquer usuário, não necessita token  |
+| POST   | /schedules                 | Agenda uma visita a um imóvel                     | Qualquer usuário, obrigatório token    |
+| GET    | /schedules/realEstate/:id  | lista todos os agendamentos de um imóvel          | Apenas Admnistradores                  |
 
 ### Endpoints, Casos de sucesso
 
